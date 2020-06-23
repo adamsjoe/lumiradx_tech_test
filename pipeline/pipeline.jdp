@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout code') {
+            steps{
+                git credentialsId: '12d6059f-5db9-41e0-b2c4-193f96b42083', url: 'https://github.com/adamsjoe/lumiradx_tech_test.git'
+            }
+        }
+        stage('Launch API') {
+
+        }
+        stage('Launch tests'){
+            steps{
+            sh label: 'Run Newman', script: 'newman run IGS.postman_collection.json -r cli,junit'
+            }
+        }
+        stage('Clean up'){
+            steps{
+                echo "Cleaning up"
+                cleanWs();
+            }
+        }
+    }
+
+    post{
+        always{
+            junit '**/newman/*.xml'
+        }
+    }    
+}
