@@ -3,7 +3,16 @@
 ## Contents ##
 
 [Approach](#approach)
+
 [Test Structure](#test-structure)
+
+[Categories Tests](#operation-categories)
+
+[Posts Tests](#operation-posts)
+
+[Issues Found](#issues-found)
+
+[Improvements](#improvements-for-the-tests)
 
 ## Approach ##
 
@@ -315,7 +324,7 @@ This contains 2 tests:
 - The return code is checked to be 200
 - The all blog posts call is used to get all the posts and this is checked to ensure it contains the newly created post.
 
-### listPosts ###
+### listPostsByYear ###
 
 **Method: GET Testname: _checkForYear_**
 
@@ -380,6 +389,77 @@ This has 2 tests:
 - Checking the return code is 200
 - Checking the number of posts is 4
 
+### deletePosts ]]]
+
+**Method: DELETE Testname: _deletePost_**
+
+This will check that a post is deleted.  This uses the sample data provided by the API.
+
+_Tests_
+
+This contains a single test:
+
+- Checks the return code is 204.
+
+**Method: DELETE Testname: _deletePostNonExisting_**
+
+This will check that a post is deleted.  This test goes against the other non-existing delete tests in that it scripts a number.
+
+_Tests_
+
+This contains a single test:
+
+- Checks the return code is 404.
+
+### getPosts ###
+
+**Method: GET Testname: _getPostById_**
+
+This will return a specific post by the id number.  This uses the sample data provided by the API.
+
+_Tests_
+
+This contains 5 tests:
+
+- Checks the return code is 200
+- Checks the blog body is correct
+- Checks the category matches
+- Checks the pub_date matches
+- Checks the title matches
+
+**Method: GET Testname: _getPostByIdNonExisting_**
+
+This will return a specific post by the id number.  This test goes against the other non-existing delete tests in that it scripts a number.
+
+_Tests_
+
+This contains 1 test:
+
+- Checks the return code is 404
+
+### updatePosts ###
+
+**Method: PUT Testname: _ipdateBlogById_**
+
+This will update the blog entry by id.  The body and title of a blog entry have the word "upated" appended to it.  This uses the sample data provided by the API.
+
+_Tests_
+
+This contains 3 tests:
+
+- Checks the return code is 204
+- Checks the body
+- Checks the title
+
+**Method: PUT Testname: _ipdateBlogByIdNonExisting_**
+
+This will update the blog entry by id.  This also goes against the normal and hard coded a large id number.  This uses the sample data provided by the API.
+
+_Tests_
+
+This contains 1 test:
+
+- Checks the return code is 404
 
 ## Issues Found ##
 
@@ -443,7 +523,7 @@ This is a classic bug vs feature argument, however I come down on the side of ra
 **The call to PUT /blog/posts/ (creating a new blog post) - should this return a 201 rather than a 200?**
 If we are creating a new blog post, should we not return the created status code?
 
-## Improvements (for the tests)##
+## Improvements (for the tests) ##
 
 At present, the base url for the tests is the same (http://localhost:8888/api/) - this really should be set as a global variable which would me the tests easily portable.
 
