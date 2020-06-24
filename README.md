@@ -69,6 +69,38 @@ This test will ensure that the delete operation has been completed.
 
 _Setup_
 
+In order to successfully test a delete, first we need to know what we want to delete.  In order to work with the Test Isolation Principe, the setup file will create a new blog category. However, due to the limitations of the create category call (that being that the create does not return anything) additional work is neeeded.
+
+Therefore, the pre-request script for this test (the setup) does the following:
+
+- Gets a count of the current number of categories present.
+- Creates a new category (this time the category is called "Super Dooper")
+- Requeries the API to get a list of all the categories (and then uses Math.max with the spread operator and map to get the largest number - this will be the one to delete)
+
+*Note*: Postman's pre-request scripts all fire off at the same time.  This causes a problem as we can get information back which is incorrect (example we could get an initial count of 3 and then a max of 3 as the create call could be slower.)  Information on Postman's sync/async in pre-request is contradictory (currently talking with one of the QA at postman to improve this documentation) - so the pre-request script makes use of a number of callbacks (this approach is technically unsupported by postman - but it does work, so there is a bug with postman's documentation) - the use of callbacks does make the code look quite ugly, but it s needed.
+_Body_
+
+The body is empty as everything is done is the request url.
+
+_Tests_
+
+**Method: DETELE Testname: _deleteNonExistingCategory_**
+
+This test will test what happens if an invalid category is used.
+
+While wriing this test, it could be easy to just pick a randomly high number and while that is OK for a quick check, I decided to do this properly.
+
+_Setup_ 
+
+The setup here makes use of the GET for all categories.  It then simply multiples the number of entries by 100.  This way, we guarentee that we will always get an id which doesn't exist.
+
+_Tests_
+
+This contains a single test.
+
+- The test 
+
+
 
 ## Issues Found ##
 
@@ -129,3 +161,6 @@ Another item I would seek to discuss with a developer, this call returns an HTTP
 
 This is a classic bug vs feature argument, however I come down on the side of raising this as a **bug**
 
+## Improvements (for the tests)##
+
+At present, the base url for the tests is the same (http://localhost:8888/api/) - this really should be set as a global variable which would me the tests easily portable.
