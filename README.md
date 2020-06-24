@@ -17,12 +17,12 @@
 ## Approach ##
 
 I have taken a slightly different approach on this task.  I have configured an Amazon EC2 micro instance at
-**http://**
+**http://3.134.118.240:8080/**
 
 which is running Jenkins.  The login details for a non admin user are below:
 
-**Username:**xxx
-**Password:**xxx
+**Username:**lumDX
+**Password:**pa55w0rd
 
 This Jenkins instance is straight "out-of-the-box" with the exception of one plugin to change the colour of "pass" from blue to green. 
 
