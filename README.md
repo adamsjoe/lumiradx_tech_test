@@ -26,14 +26,14 @@ which is running Jenkins.  The login details for a non admin user are below:
 **Password:** pa55w0rd
 
 
-This Jenkins instance is straight "out-of-the-box" with the exception of one plugin to change the colour of "pass" from blue to green. 
+This Jenkins instance is straight "out-of-the-box" with the exception of one plug-in to change the colour of "pass" from blue to green. 
 
 
 There is a single project configured for the LumeraDX Test API.
 
 **INSERT URL HERE**
 
-This set of tests has been created with postman and output as a collection.  The actual json produced is available in this archive.
+This set of tests has been created with postman and output as a collection.  The actual JSON produced is available in this archive.
 Newman is being used to run the tests and product the report (available within each numbered build.)
 
 ## Test Structure ##
@@ -47,7 +47,7 @@ Where the Swagger documentation lists multiple return codes, I have tried to cov
 
 **Method: GET Testname: _listBlogCategories_**
 
-The API call returns a list of blog categories.  I had envisoned a different running setup (where the API would be tore down after each run and redeployed) which would have meant this test always ran on a "known" state.  As the API will not be getting torn down, one of the tests here will fail (the number of categories.)
+The API call returns a list of blog categories.  I had envisioned a different running setup (where the API would be tore down after each run and redeployed) which would have meant this test always ran on a "known" state.  As the API will not be getting torn down, one of the tests here will fail (the number of categories.)
 
 _Setup_
 
@@ -80,7 +80,7 @@ This has 3 tests:
 
 - Checking the return code is 201
 - Checking that there is one more category than there was at the start
-- Checking that the name of the latest added blog entry matches the randon one selected at the setup (in order to check this, a different API call **/blog/categories/{id}** is used.)
+- Checking that the name of the latest added blog entry matches the random one selected at the setup (in order to check this, a different API call **/blog/categories/{id}** is used.)
 
 **Method: DELETE Testname: _deleteCategory_**
 
@@ -88,13 +88,13 @@ This test will ensure that the delete operation has been completed.
 
 _Setup_
 
-In order to successfully test a delete, first we need to know what we want to delete.  In order to work with the Test Isolation Principe, the setup file will create a new blog category. However, due to the limitations of the create category call (that being that the create does not return anything) additional work is neeeded.
+In order to successfully test a delete, first we need to know what we want to delete.  In order to work with the Test Isolation Principe, the setup file will create a new blog category. However, due to the limitations of the create category call (that being that the create does not return anything) additional work is needed.
 
 Therefore, the pre-request script for this test (the setup) does the following:
 
 - Gets a count of the current number of categories present.
 - Creates a new category (this time the category is called "Super Dooper")
-- Requeries the API to get a list of all the categories (and then uses Math.max with the spread operator and map to get the largest number - this will be the one to delete)
+- Re-queries the API to get a list of all the categories (and then uses Math.max with the spread operator and map to get the largest number - this will be the one to delete)
 
 The key part of this is that a new category is created.  This is tested in another script, so this test only cares about the number of categories before a new category is created and then the number after the new category has been deleted.  These numbers should match.
 
@@ -102,7 +102,7 @@ The key part of this is that a new category is created.  This is tested in anoth
 
 _Body_
 
-The body is empty as everything is done is the request url.
+The body is empty as everything is done is the request URL.
 
 _Tests_
 
@@ -111,15 +111,15 @@ This has 2 tests:
 - Checking that the return code is 204
 - Ensuring that the same number of categories are present after the test
 
-**Method: DETELE Testname: _deleteNonExistingCategory_**
+**Method: DELETE Testname: _deleteNonExistingCategory_**
 
 This test will test what happens if an invalid category is used.
 
-While wriing this test, it could be easy to pick a randomly high number and then use that.  However, in adopting this approach, there is a risk that the number could be reached.  This could then cause other tests to fail.  To keep in line with Test Isolation, it is imperitive that a number be selected which will never be reached.  To do this, I chose to again use another of the API calls to get the number of categories and then to multiply this by 100.  This means the "non existing" number will always be ahead of the actual number of categories and there is no chance of it catching up.
+While writing this test, it could be easy to pick a randomly high number and then use that.  However, in adopting this approach, there is a risk that the number could be reached.  This could then cause other tests to fail.  To keep in line with Test Isolation, it is imperative that a number be selected which will never be reached.  To do this, I chose to again use another of the API calls to get the number of categories and then to multiply this by 100.  This means the "non existing" number will always be ahead of the actual number of categories and there is no chance of it catching up.
 
 _Setup_ 
 
-The setup here makes use of the GET for all categories.  It then simply multiples the number of entries by 100.  This way, we guarentee that we will always get an id which doesn't exist.
+The setup here makes use of the GET for all categories.  It then simply multiples the number of entries by 100.  This way, we guarantee that we will always get an id which doesn't exist.
 
 _Tests_
 
@@ -162,11 +162,11 @@ This test will update a blog entry and then check that this has been done succes
 
 _Setup_
 
-This makes use of the now familar code to get the number of items, create a new item (which will be updated) and then getting the id of that item (and setting that as a postman variable.)
+This makes use of the now familiar code to get the number of items, create a new item (which will be updated) and then getting the id of that item (and setting that as a postman variable.)
 
 _body_
 
-The request is posted with the category in the URL.  The body is a JSON object with the name "upated category name"
+The request is posted with the category in the URL.  The body is a JSON object with the name "updated category name"
 
 _Tests_
 
@@ -297,7 +297,7 @@ There are 2 tests:
 
 **Method: GET Testname: _testChangingPage_**
 
-This test will pass in a different page number and check that the page in the reponse matches the page number passed in.
+This test will pass in a different page number and check that the page in the response matches the page number passed in.
 
 _Tests_
 
@@ -312,7 +312,7 @@ This will test the creating of a blog post.
 
 _Setup_ 
 
-The setup for this is fairly complex.  It will create a timestamp based on the current datetime.  
+The setup for this is fairly complex.  It will create a timestamp based on the current date time.  
 It will select a new category type.
 It will then create the blog category.
 
@@ -368,7 +368,7 @@ This has 2 tests:
 
 **Method: GET Testname: _checkForYearMonthNonExisting_**
 
-This will test returning the posts from a specific year which does not exist.  The year chosen is 1895 and Jine.  There will not be many blog posts then.
+This will test returning the posts from a specific year which does not exist.  The year chosen is 1895 and June.  There will not be many blog posts then.
 
 This test isn't actually covered in swagger, but was added as it seems sensible.
 
@@ -444,7 +444,7 @@ This contains 1 test:
 
 **Method: PUT Testname: _ipdateBlogById_**
 
-This will update the blog entry by id.  The body and title of a blog entry have the word "upated" appended to it.  This uses the sample data provided by the API.
+This will update the blog entry by id.  The body and title of a blog entry have the word "updated" appended to it.  This uses the sample data provided by the API.
 
 _Tests_
 
@@ -482,7 +482,9 @@ This would be classed as an *improvement*
 
 **Creating a blog category returns null**
 
-This is something I would address with the dev team.  The create blog category call simply returns a null.  This isn't really helpful.  From a test perspective alone, this means 3 levels of callbacks to enable the correct id number created to be used in the delete test.  Not only does this add additional complexity to the test code but, in my opinion, is bad practice.  The create call should, in my opinion, return a JSON object with what has been created.
+This is something I would address with the dev team.  The create blog category call simply returns a null.  This isn't really helpful.  From a test perspective alone, this means 3 levels of callbacks to enable the correct id number created to be used in the delete test.  This approach creates additional complexity to the test code and, more importantly, increases the chattiness of the API which will result in an increased total execution time for the transaction of creating a new category, and impact the end user experience. By refactoring the create call to return a populated JSON object, or at the least an Id, this performance concern should be mitigated.
+
+The conversation around whether this represents a bug, an improvement, or is not relevant should involve both the Developer and the Product Manager so that the PM can appropriately prioritise the user experience.
 
 This is a classic bug vs feature argument, however I come down on the side of raising this as a **bug**
 
@@ -529,10 +531,10 @@ If we are creating a new blog post, should we not return the created status code
 **"In use" deleting blog**
 There is a 409 in use code for one of the deleted calls.  I couldn't get this to trigger.  So marking this as a question to raise to dev.
 
-If no dev was available, it would be raised as a **bug** to ensure it is not forgotton or lost.
+If no dev was available, it would be raised as a **bug** to ensure it is not forgotten or lost.
 
 ## Improvements (for the tests) ##
 
-At present, the base url for the tests is the same (http://localhost:8888/api/) - this really should be set as a global variable which would me the tests easily portable.
+At present, the base URL for the tests is the same (http://localhost:8888/api/) - this really should be set as a global variable which would me the tests easily portable.
 
 There tests in the listPosts folder have a number which check the per_page.  These tests are identical and there will be way of iterating over these (in the postman runner there is - but not sure if newman supports this.)  It would make the tests look neater and still maintain coverage.
