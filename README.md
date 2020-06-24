@@ -31,10 +31,20 @@ This Jenkins instance is straight "out-of-the-box" with the exception of one plu
 
 There is a single project configured for the LumeraDX Test API.
 
-**INSERT URL HERE**
+**http://3.134.118.240:8080/job/LumiraDX/**
+
+Tests can be ran by logging in and selecting the "build now" on the left.
+
+A test report will be produced for each run, it will be stored against each run.
+
+**Note**: As I couldn't get the API to reset after every run, the tests will degrade each time they are run.
 
 This set of tests has been created with postman and output as a collection.  The actual JSON produced is available in this archive.
 Newman is being used to run the tests and product the report (available within each numbered build.)
+
+### Pipelie ###
+
+The GitHub repo contains a pipeline folder, this is the Jenkins pipeline to run the tests and produce the report.
 
 ## Test Structure ##
 
