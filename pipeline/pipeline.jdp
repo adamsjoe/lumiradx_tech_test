@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout code') {
             steps{
-                git credentialsId: '12d6059f-5db9-41e0-b2c4-193f96b42083', url: 'https://github.com/adamsjoe/lumiradx_tech_test.git'
+                git credentialsId: 'GitHub', url: 'https://github.com/adamsjoe/lumiradx_tech_test.git'
             }
         }
         stage('Launch API') {
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Launch tests'){
             steps{
-                sh label: 'Run Newman', script: 'newman run IGS.postman_collection.json -r cli,junit'
+                sh label: 'Run Newman', script: 'newman run temp.postman_collection.json -r cli,junit'
             }
         }
         stage('Clean up'){
