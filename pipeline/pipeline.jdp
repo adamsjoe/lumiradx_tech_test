@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Launch tests'){
             steps{
-                sh label: 'Run Newman', script: 'newman run temp.postman_collection.json -r cli,junit'
+                sh label: 'Run Newman', script: 'newman run LumiraDX.postman_collection.json -r cli,junit'
             }
         }
         stage('Clean up'){
