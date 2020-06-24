@@ -28,7 +28,6 @@ which is running Jenkins.  The login details for a non admin user are below:
 
 This Jenkins instance is straight "out-of-the-box" with the exception of one plug-in to change the colour of "pass" from blue to green. 
 
-
 There is a single project configured for the LumeraDX Test API.
 
 **http://3.134.118.240:8080/job/LumiraDX/**
@@ -45,6 +44,24 @@ Newman is being used to run the tests and product the report (available within e
 ### Pipelie ###
 
 The GitHub repo contains a pipeline folder, this is the Jenkins pipeline to run the tests and produce the report.
+
+### Sample Report ###
+
+There is a screenshot of a report which I have already ran.  This is in the SampleReportScreenshot folder and it is just a PNG - not an HTML report - the report is available on Jenkins.
+
+### Important - if tests will not run ###
+
+There can be reasons outwith my control why the Jenkins box could go down, the API fail and fall over.  If this happens, then the tests can be run locally.
+
+You will need to install the API as per instructions sent out.
+
+You will also need postman (https://www.postman.com/downloads/) 
+
+Once Postman is installed, start it up.  On the main screen you will see an "Import" button.  Simply drag and drop the file "LumiraDX.postman.collection.json" and the tests will be imported in a new collection called "LumiraDX"
+
+The tests will be imported.
+
+To run the tests in sequence click the "Runner" button (next to the import button.)  In the new window which opens, select the "LumiraDX" folder, and then click the "Run LumiraDX" button.
 
 ## Test Structure ##
 
