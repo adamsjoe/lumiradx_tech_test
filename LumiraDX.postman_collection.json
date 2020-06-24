@@ -1,0 +1,1806 @@
+{
+	"info": {
+		"_postman_id": "bd83d4e9-755b-46bf-8f84-0e22f9945320",
+		"name": "LumiraDX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OperationsPosts",
+			"item": [
+				{
+					"name": "listPosts",
+					"item": [
+						{
+							"name": "listAllBlogPostsDefaultPerPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8d8b74cc-a7fe-4785-8931-d9f7b79c651a",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.per_page).to.eql(10);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listAllBlogPostsDefault2PerPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bc2e5c87-efda-4d53-814f-1e5153e78bb6",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.per_page).to.eql(2);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listAllBlogPostsDefault10PerPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b6639046-9dbb-4981-b063-43dd8426ba2d",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.per_page).to.eql(10);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listAllBlogPostsDefault20PerPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8c8bb395-e631-48ea-b796-0e9328c36a69",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.per_page).to.eql(20);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=20",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listAllBlogPostsDefault40PerPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "114de5f5-9183-4f8c-aaa3-0e226f9aea44",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.per_page).to.eql(40);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=40",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "40"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listAllBlogPostsDefault50PerPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b3d48fb4-4a9a-439a-93b4-e1982a6dfeab",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.per_page).to.eql(40);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=50",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "50"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "testPageCalculations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3621284c-10cc-48c3-b998-0d3495cce838",
+										"exec": [
+											"// setup some variables",
+											"var perPage = 2;",
+											"var total = pm.variables.get(\"totalPosts\");",
+											"",
+											"// the number of pages will be total / perPage",
+											"// this will need to be rounded",
+											"var pages = Math.round(total/perPage);",
+											"",
+											"console.log(\"pages \" + pages);",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Ensure 'pages' is set correctly\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.pages).to.eql(pages);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d0006b63-a4a0-472f-8b2e-49570f3a7857",
+										"exec": [
+											"// get the total number of posts currently stored",
+											"pm.sendRequest(\"http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=2\", function (err, response) {    ",
+											"    pm.variables.set(\"totalPosts\", response.json().total);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "testChangingPage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a2874a17-b7f3-4d2e-94de-aaf08aa26e6a",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.page).to.eql(2);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "6b3ea1ec-9e4a-47c3-9118-b037c0bc6729",
+										"exec": [
+											"// get the total number of posts currently stored",
+											"pm.sendRequest(\"http://localhost:8888/api/blog/posts/?page=1&bool=false&per_page=2\", function (err, response) {    ",
+											"    pm.variables.set(\"totalPosts\", response.json().total);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/?page=2&bool=false&per_page=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "bool",
+											"value": "false"
+										},
+										{
+											"key": "per_page",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "createPosts",
+					"item": [
+						{
+							"name": "createABlogPost",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "37598691-34ba-4ffb-8a9a-0e0f009063a9",
+										"exec": [
+											"// get a timestamp",
+											"var today = new Date();",
+											"var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();",
+											"var time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds() + \".\" + today.getMilliseconds() + \"Z\";",
+											"var dateTime = date+'T'+time;",
+											"pm.variables.set(\"dateAndTime\", dateTime);",
+											"",
+											"var categoryNames = [\"Economics\",\"Parenting\",\"Career\",\"Pet\",\"Gaming\",\"Nature\",\"DIY\", \"Celebrity Gossip\",\"Media\",\"Social Media\",\"Cat\",\"Fitness\"];",
+											"",
+											"// randomly select a category name",
+											"pm.variables.set(\"categoryName\", categoryNames[_.random(categoryNames.length - 1)]);",
+											"",
+											"const req1 = req => {",
+											"  pm.sendRequest(",
+											"    {",
+											"      url: 'http://localhost:8888/api/blog/categories/',",
+											"      method: 'GET',",
+											"    },",
+											"    (err, res) => req2(err, res),",
+											"  );",
+											"};",
+											"const req2 = (err, res) => {",
+											"  if (err) throw err;",
+											"  const varResponseData = res.json();",
+											"  console.log('b4 ' + varResponseData.length);",
+											"  pm.variables.set('beforeDeleteTesting', res.json().length);",
+											"  pm.sendRequest(",
+											"    {",
+											"      url: 'http://localhost:8888/api/blog/categories/',",
+											"      method: 'POST',",
+											"      header: 'content-type: application/json',",
+											"      body: {",
+											"        mode: 'raw',",
+											"        raw: JSON.stringify({ name: pm.variables.get(\"categoryName\") }),",
+											"      },",
+											"    },",
+											"    (err2, res2) => req3(err2, res, res2),",
+											"  );",
+											"};",
+											"const req3 = (err, res, res2) => {",
+											"  if (err) throw err;",
+											"  pm.sendRequest(",
+											"    {",
+											"      url: 'http://localhost:8888/api/blog/categories/',",
+											"      method: 'GET',",
+											"    },",
+											"    (err3, res3) => result(err3, res, res2, res3),",
+											"  );",
+											"};",
+											"const result = (err, res, res2, res3) => {",
+											"  if (err) throw err;",
+											"  console.log(res, res2, res3);",
+											"  const varResponseData = res3.json();",
+											"  // console.log(res.json());",
+											"  const max = Math.max(...varResponseData.map(user => user.id));",
+											"  console.log('max val ' + max);",
+											"  pm.variables.set('idToCreate', max);",
+											"  setTimeout(function() {}, 2000);",
+											"};",
+											"req1();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "84552255-d356-4d81-9a9c-760fb252e61e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.sendRequest(\"http://localhost:8888/api/blog/posts/?page=1&per_page=50\", function (err, res) {",
+											"    if (err) { console.log(\"e:\" + err); }",
+											"    pm.test(\"Check that the new blog post has been created\", function () {",
+											"        pm.expect(err).to.equal(null);",
+											"                ",
+											"        // pm.expect(res.json().length).to.eql(pm.variables.get(\"categoriesBeforeAdding\") + 1);",
+											"         pm.expect(res.text()).to.include(\"Blog post about \" + pm.variables.get(\"categoryName\") + \" posted on \" + pm.variables.get(\"dateAndTime\"));",
+											"    })",
+											"",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"body\": \"This is the body of the blog post created on {{dateAndTime}}\",\n  \"category\": \"string\",\n  \"category_id\": {{idToCreate}},\n  \"id\": 0,\n  \"pub_date\": \"{{dateAndTime}}\",\n  \"title\": \"Blog post about {{categoryName}} posted on {{dateAndTime}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "listPostsByYear",
+					"item": [
+						{
+							"name": "checkForNonExistingYear",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "daed7855-a71e-4a9f-86f3-fb9d7aaa9ebb",
+										"exec": [
+											"pm.variables.set(\"year\", 1988);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "b1a591e7-4785-420c-a66f-2424ab6560c4",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Check total is 0\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.total).to.eql(0);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/archive/{{year}}/?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"archive",
+										"{{year}}",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "checkForYear",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1536f103-3fd2-4739-995c-ddbb974f322f",
+										"exec": [
+											"pm.variables.set(\"year\", 2016);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "1ee11eff-61dd-407d-bae4-1752b5c1b3c8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Check total for year 2016 is 5\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.total).to.eql(5);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/archive/{{year}}/?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"archive",
+										"{{year}}",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "listPostsByYearMonth",
+					"item": [
+						{
+							"name": "checkForYearMonth",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "6732ea19-99d2-4f17-8b41-3c7d78e2744c",
+										"exec": [
+											"pm.variables.set(\"year\", 2016);",
+											"pm.variables.set(\"month\", 06);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "783a2bf3-e64f-468b-80c0-8e268d4e612e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Check total for year 06-2016 is 5\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.total).to.eql(5);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/archive/{{year}}/{{month}}/?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"archive",
+										"{{year}}",
+										"{{month}}",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "checkForYearMonthNotExisting",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "4e9ebc56-a2da-4379-b27a-78dc967a3846",
+										"exec": [
+											"pm.variables.set(\"year\", 1895);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "4059cd41-49a0-4e88-8934-41d02e049337",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Check total for year 1895 is 0\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.total).to.eql(0);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/archive/{{year}}/?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"archive",
+										"{{year}}",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "listPostsByYearMonthDay",
+					"item": [
+						{
+							"name": "checkForYearMonth",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1fa80897-fce5-4d2e-ae8d-b19188717dec",
+										"exec": [
+											"pm.variables.set(\"year\", 2016);",
+											"pm.variables.set(\"month\", 06);",
+											"pm.variables.set(\"day\", 11)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "943f91f9-1068-4a30-8560-8cf411d2d7b4",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Check total for year 2016 / 06 / 11 is 4\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.total).to.eql(4);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/archive/{{year}}/{{month}}/{{day}}/?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"archive",
+										"{{year}}",
+										"{{month}}",
+										"{{day}}",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "deletePosts",
+					"item": [
+						{
+							"name": "deletePostNonExisting",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1e398ec8-d3f6-4ca4-933f-11013c7f6867",
+										"exec": [
+											"pm.variables.set(\"idToDel\", 9999);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "210bd788-6834-4684-9bdd-10bed1e158a6",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/{{idToDel}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"{{idToDel}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletePost",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "90145d25-9953-402a-b7db-330361536bf5",
+										"exec": [
+											"pm.variables.set(\"idToDel\", 5);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "d4ce2af9-d87e-4975-86fc-855cf0394e20",
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/{{idToDel}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"{{idToDel}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "getPosts",
+					"item": [
+						{
+							"name": "getBlogPostById",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "5d070070-e09e-4278-8de6-28e382ebf2d9",
+										"exec": [
+											"pm.variables.set(\"idToUse\", 1);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a1dd7caa-61bf-4448-8976-09fd40ce5238",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.body).to.eql(\"The drought had lasted now for ten million years, and the reign of the terrible lizards had long since ended. Here on the Equator, in the continent which would one day be known as Africa, the battle for existence had reached a new climax of ferocity, and the victor was not yet in sight. In this barren and desiccated land, only the small or the swift or the fierce could flourish, or even hope to survive.\");",
+											"});",
+											"",
+											"pm.test(\"Check category matches\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.category).to.eql(\"Sci-Fi\");",
+											"});",
+											"",
+											"pm.test(\"Check pub_date matches\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.pub_date).to.eql(\"2016-06-11T15:56:29.200201\");",
+											"});",
+											"",
+											"pm.test(\"Check title matches\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.title).to.eql(\"The Road to Extinction\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/{{idToUse}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"{{idToUse}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getBlogPostByIdNonExisting",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "016f2bbe-9a97-4954-970f-c63f81b2e1e6",
+										"exec": [
+											"pm.variables.set(\"idToUse\", 9999);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "aced868d-0c69-466d-85c0-19b50b0946af",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/{{idToUse}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"{{idToUse}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "updatePosts",
+					"item": [],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "OperationsCategories",
+			"item": [
+				{
+					"name": "listBlogCategories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a15b3ec-8aed-4b0f-b413-5a6290925c04",
+								"exec": [
+									"/**",
+									" * initialAPIStates",
+									" * ",
+									" * @Description: Checks the initial state of the API.  NOTE: only to be used after a restart of the API when values will be known (for now)",
+									" */",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Only 3 objects in array\", function () {",
+									"    pm.expect(pm.response.json().length).to.eql(3);",
+									"});",
+									"",
+									"pm.test(\"Check first product - name\", function () {",
+									"    pm.expect(pm.response.json()[0].name).to.eql(\"Sci-Fi\");",
+									"});",
+									"",
+									"pm.test(\"Check second product - name\", function () {",
+									"    pm.expect(pm.response.json()[1].name).to.eql(\"Politics\");",
+									"});",
+									"",
+									"pm.test(\"Check third product - name\", function () {",
+									"    pm.expect(pm.response.json()[2].name).to.eql(\"Tech\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createNewBlogCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b310d109-61fe-47a0-b86b-222565b67684",
+								"exec": [
+									"var categoryNames = [\"Economics\",\"Parenting\",\"Career\",\"Pet\",\"Gaming\",\"Nature\",\"DIY\", \"Celebrity Gossip\",\"Media\",\"Social Media\",\"Cat\",\"Fitness\"];",
+									"var categoriesBeforeAdding = 0;",
+									"",
+									"// randomly select a category name",
+									"pm.variables.set(\"categoryName\", categoryNames[_.random(categoryNames.length - 1)]);",
+									"",
+									"console.log(\"Setting the categoryName to be '\" + pm.variables.get(\"categoryName\") + \"'\");",
+									"",
+									"// get the number of categories before we start adding anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }",
+									"    pm.variables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.variables.get(\"categoriesBeforeAdding\") + \" categories.\");   ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3839d15b-a444-4186-ad34-380bf149800b",
+								"exec": [
+									"// check the status code is 201 (created)",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// check that we have 1 more category than when we started",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(\"e:\" + err); }",
+									"    pm.test(\"Adding categories increases category count\", function () {",
+									"        pm.expect(err).to.equal(null);",
+									"        ",
+									"        console.log(\"We had \" + pm.variables.get(\"categoriesBeforeAdding\") + \" categories, add one means we should now have \" + (pm.variables.get(\"categoriesBeforeAdding\") + 1))    ",
+									"        pm.expect(res.json().length).to.eql(pm.variables.get(\"categoriesBeforeAdding\") + 1);",
+									"    })",
+									"",
+									"});",
+									"",
+									"// check that the name has been created correctly",
+									"var latestCategoryId = (pm.variables.get(\"categoriesBeforeAdding\") + 1);",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\"+ latestCategoryId, function (err, res) {",
+									"    if (err) { console.log(\"e:\" + err); }",
+									"    pm.test(\"Check the category has been created\", function () {",
+									"        pm.expect(res.json().name).to.eql(pm.variables.get(\"categoryName\"));",
+									"    })",
+									"",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{categoryName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3a7eeb27-5f21-4dab-b833-29cc1c202f4d",
+								"exec": [
+									"const req1 = req => {",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err, res) => req2(err, res),",
+									"  );",
+									"};",
+									"const req2 = (err, res) => {",
+									"  if (err) throw err;",
+									"  const varResponseData = res.json();",
+									"  console.log('b4 ' + varResponseData.length);",
+									"  pm.variables.set('beforeDeleteTesting', res.json().length);",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'POST',",
+									"      header: 'content-type: application/json',",
+									"      body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ name: 'Super Dooper' }),",
+									"      },",
+									"    },",
+									"    (err2, res2) => req3(err2, res, res2),",
+									"  );",
+									"};",
+									"const req3 = (err, res, res2) => {",
+									"  if (err) throw err;",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err3, res3) => result(err3, res, res2, res3),",
+									"  );",
+									"};",
+									"const result = (err, res, res2, res3) => {",
+									"  if (err) throw err;",
+									"  console.log(res, res2, res3);",
+									"  const varResponseData = res3.json();",
+									"  // console.log(res.json());",
+									"  const max = Math.max(...varResponseData.map(user => user.id));",
+									"  console.log('max val ' + max);",
+									"  pm.variables.set('idToDelete', max);",
+									"  setTimeout(function() {}, 2000);",
+									"};",
+									"req1();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "525611c5-697e-4bc4-9a1d-636e296bf916",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"// pm.test(\"Check we have the same number of elements from before the delete test\", function () {",
+									"//     pm.expect(pm.response.json().length).to.eql(pm.variables.get('beforeDeleteTesting'));",
+									"// });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToDelete}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToDelete}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteNonExistingCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "97a87b73-bfa2-4e08-94dc-f51ef0f834da",
+								"exec": [
+									"// get the number of categories before we start adding/deleting anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }    ",
+									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
+									"});",
+									"",
+									"// now let's make sure we use a number which should not exist",
+									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
+									"pm.variables.set(\"idToUse\", nonExistingId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e53ecfd5-3f70-4dca-acea-e8f75f1daa88",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listPostsInCategory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "88c76675-2fd0-41d0-8d12-c25237e43f37",
+								"exec": [
+									"/**",
+									" * initialAPIStates",
+									" * ",
+									" * @Description: Checks the initial state of the API.  NOTE: only to be used after a restart of the API when values will be known (for now)",
+									" */",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listPostsInCategoryNonExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c94ef785-173a-4b22-b33b-6a6d17176f76",
+								"exec": [
+									"/**",
+									" * initialAPIStates",
+									" * ",
+									" * @Description: Checks the initial state of the API.  NOTE: only to be used after a restart of the API when values will be known (for now)",
+									" */",
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b3080a2e-007d-47e8-bf23-e14856a69689",
+								"exec": [
+									"// get the number of categories before we start adding/deleting anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }    ",
+									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
+									"});",
+									"",
+									"// now let's make sure we use a number which should not exist",
+									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
+									"pm.variables.set(\"idToUse\", nonExistingId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateBlogCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9c9e9dd9-c04b-420d-940c-2cb77f32768a",
+								"exec": [
+									"const req1 = req => {",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err, res) => req2(err, res),",
+									"  );",
+									"};",
+									"const req2 = (err, res) => {",
+									"  if (err) throw err;",
+									"  const varResponseData = res.json();",
+									"  console.log('b4 ' + varResponseData.length);",
+									"  pm.variables.set('beforeDeleteTesting', res.json().length);",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'POST',",
+									"      header: 'content-type: application/json',",
+									"      body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ name: 'Super Dooper' }),",
+									"      },",
+									"    },",
+									"    (err2, res2) => req3(err2, res, res2),",
+									"  );",
+									"};",
+									"const req3 = (err, res, res2) => {",
+									"  if (err) throw err;",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err3, res3) => result(err3, res, res2, res3),",
+									"  );",
+									"};",
+									"const result = (err, res, res2, res3) => {",
+									"  if (err) throw err;",
+									"  console.log(res, res2, res3);",
+									"  const varResponseData = res3.json();",
+									"  // console.log(res.json());",
+									"  const max = Math.max(...varResponseData.map(user => user.id));",
+									"  console.log('max val ' + max);",
+									"  pm.variables.set('idToUse', max);",
+									"  setTimeout(function() {}, 2000);",
+									"};",
+									"req1();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8aba5c41-b21d-4177-a72b-ed7abccecd54",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"  ",
+									"pm.test(\"Check that the name was updated\", function () {",
+									"    pm.sendRequest(\"http://localhost:8888/api/blog/categories/\"+pm.variables.get(\"idToUse\"), function (err, response) {",
+									"        console.log(response.json());",
+									"        var jsonData = response.json();",
+									"        pm.expect(jsonData.name).to.eql(\"Updated Category Name\");",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Category Name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateNonExistingBlogCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1da7fa07-0839-4d08-8a1b-b2f160e08417",
+								"exec": [
+									"// get the number of categories before we start adding/deleting anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }    ",
+									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
+									"});",
+									"",
+									"// now let's make sure we use a number which should not exist",
+									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
+									"pm.variables.set(\"idToUse\", nonExistingId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "93b91d2c-070d-4a0d-983d-47caf92ea9d6",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Will not matter - not found\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
