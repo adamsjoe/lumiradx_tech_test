@@ -12,6 +12,18 @@ pipeline {
                 sh "scripts/startup.sh"
             }
         }
+        stage('Wait for API to be up') {
+            steps{    
+                timeout(5) {
+                    waitUntil {
+                        script {
+                            def r = sh script: 'wget -q http://localhost:8888/api/ -O /dev/null', returnStdout: true
+                            return (r == 0);
+                        }
+                    }
+                } 
+            }           
+        }
         stage('Launch tests'){
             steps{
                 sh label: 'Run Newman', script: 'newman run temp.postman_collection.json -r cli,junit'
