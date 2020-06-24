@@ -1,5 +1,10 @@
 # LumiraDX API Tech Test #
 
+## Contents ##
+
+[Approach](#approach)
+[Test Structure](#test-structure)
+
 ## Approach ##
 
 I have taken a slightly different approach on this task.  I have configured an Amazon EC2 micro instance at
@@ -23,6 +28,8 @@ Newman is being used to run the tests and product the report (available within e
 
 The tests have been split in to two areas, categories and posts (as per the swagger documentation.)
 Where possible, I have tried to use other APIs as either part of the setup (pre-request in postman-speak) or part of the test.
+
+Where the Swagger documentation lists multiple return codes, I have tried to cover these also.
 
 ### Operation Categories ###
 
@@ -77,18 +84,26 @@ Therefore, the pre-request script for this test (the setup) does the following:
 - Creates a new category (this time the category is called "Super Dooper")
 - Requeries the API to get a list of all the categories (and then uses Math.max with the spread operator and map to get the largest number - this will be the one to delete)
 
+The key part of this is that a new category is created.  This is tested in another script, so this test only cares about the number of categories before a new category is created and then the number after the new category has been deleted.  These numbers should match.
+
 *Note*: Postman's pre-request scripts all fire off at the same time.  This causes a problem as we can get information back which is incorrect (example we could get an initial count of 3 and then a max of 3 as the create call could be slower.)  Information on Postman's sync/async in pre-request is contradictory (currently talking with one of the QA at postman to improve this documentation) - so the pre-request script makes use of a number of callbacks (this approach is technically unsupported by postman - but it does work, so there is a bug with postman's documentation) - the use of callbacks does make the code look quite ugly, but it s needed.
+
 _Body_
 
 The body is empty as everything is done is the request url.
 
 _Tests_
 
+This has 2 tests:
+
+- Checking that the return code is 204
+- Ensuring that the same number of categories are present after the test
+
 **Method: DETELE Testname: _deleteNonExistingCategory_**
 
 This test will test what happens if an invalid category is used.
 
-While wriing this test, it could be easy to just pick a randomly high number and while that is OK for a quick check, I decided to do this properly.
+While wriing this test, it could be easy to pick a randomly high number and then use that.  However, in adopting this approach, there is a risk that the number could be reached.  This could then cause other tests to fail.  To keep in line with Test Isolation, it is imperitive that a number be selected which will never be reached.  To do this, I chose to again use another of the API calls to get the number of categories and then to multiply this by 100.  This means the "non existing" number will always be ahead of the actual number of categories and there is no chance of it catching up.
 
 _Setup_ 
 
@@ -98,8 +113,272 @@ _Tests_
 
 This contains a single test.
 
-- The test 
+- The test checks that the status of 404 is returned.
 
+**Method: GET Testname: _listPostsInCategory_**
+
+This test returns a list of the posts in a category and the category name.
+
+_Setup_
+In order to maximise the time, I have relied on the same data supplied for the first 3 categories.  However, the pre-request script has been setup to store values as variables to avoid hard-coding expected values.
+
+_Tests_
+
+This contains 3 tests:
+
+- Ensuring the error code is 200
+- Ensuring the Category name returned matches "Sci-Fi" (the expected value is stored as a variable)
+- Ensuring the number of posts matches 4 (again this value is stored as a variable)
+
+**Method: GET Testname: _listPostsInCategoryNonExisting_**
+
+As with the deleteNonExisting test, the goal of this test is simply to ensure a 404 is returned if an invalid category is used.
+
+_Setup_
+
+The setup is identical to the deleteNonExisting test - the number of items is returned and multiplied by 100.
+
+_Tests_
+
+This contains 1 test:
+
+- The return code is 404
+
+**Method: PUT Testname: _updateBlogCategory_**
+
+This test will update a blog entry and then check that this has been done successfully.  Again, the PUT call doesn't return anything of any use back, so an additional sendRequest has to be used in the test.
+
+_Setup_
+
+This makes use of the now familar code to get the number of items, create a new item (which will be updated) and then getting the id of that item (and setting that as a postman variable.)
+
+_body_
+
+The request is posted with the category in the URL.  The body is a JSON object with the name "upated category name"
+
+_Tests_
+
+This contains 2/3 tests:
+
+- Checking the return code is 204
+- Calling the blog/categories/{id} endpoint and checking that "Updated Category Name" is the blog title.
+- As part of the above, I have also included a check for the correct id.  This isn't really needed and, technically, should be in its' own test.  But this was done for quickness.
+
+**Method: PUT Testname: _updateNonExistingBlogCategory_**
+
+Again, this test will try to update a category which does not exist.  The setup stage has been well used and is the same as others.
+
+This contains 1 test:
+
+- Checks the return code is 404
+
+### Operation Posts ###
+
+#### Lists Posts ####
+
+This folder of tests deals with listing all the posts from the API.  Several of these are very similar. 
+
+**Method: GET Testname: _listAllBlogPostsDefaultValue_**
+
+The documentation says that the number of posts per page has a default value of 10.  This test will call the endpoint with no per_page parameter and ensure that the response returns  a per_page of 10.
+
+_Setup_
+
+No real setup required for this.
+
+_Tests_
+
+This contains 2 tests
+
+- Checks the return code is 200
+- Checks that the per_page is 10
+
+**Method: GET Testname: listAllBlogPosts2PerPage**
+
+This test will call the endpoint with no per_page parameter and ensure that the response returns  a per_page of 2.
+
+_Setup_
+
+No real setup required for this.
+
+_Tests_
+
+This contains 2 tests
+
+- Checks the return code is 200
+- Checks that the per_page is 2
+
+**Method: GET Testname: listAllBlogPosts10PerPage**
+
+This test will call the endpoint with no per_page parameter and ensure that the response returns  a per_page of 10.
+
+_Setup_
+
+No real setup required for this.
+
+_Tests_
+
+This contains 2 tests
+
+- Checks the return code is 200
+- Checks that the per_page is 10
+
+**Method: GET Testname: listAllBlogPosts20PerPage**
+
+This test will call the endpoint with no per_page parameter and ensure that the response returns  a per_page of 20.
+
+_Setup_
+
+No real setup required for this.
+
+_Tests_
+
+This contains 2 tests
+
+- Checks the return code is 200
+- Checks that the per_page is 20
+
+**Method: GET Testname: listAllBlogPosts40PerPage**
+
+This test will call the endpoint with no per_page parameter and ensure that the response returns  a per_page of 40.
+
+_Setup_
+
+No real setup required for this.
+
+_Tests_
+
+This contains 2 tests
+
+- Checks the return code is 200
+- Checks that the per_page is 40
+
+**Method: GET Testname: listAllBlogPosts50PerPage**
+
+This test will call the endpoint with no per_page parameter and ensure that the response returns  a per_page of 50.
+
+_Setup_
+
+No real setup required for this.
+
+_Tests_
+
+This contains 2 tests
+
+- Checks the return code is 200
+- Checks that the per_page is 50
+
+**Method: GET Testname: _testPageCalculations_**
+
+This test checks that the pages element of the blog/posts response is correct.  To do this, and using the existing sample data, I get all the blog posts  and set the per page to be 2.
+
+The test will check that total / 2 = pages (rounded)
+
+_Setup_ 
+
+In setup, the number of blog entries is retrieved.
+
+There are 2 tests:
+
+- Checking the return code is 200
+- Checking that the number of pages is correct (using the simple formula above.)
+
+**Method: GET Testname: _testChangingPage_**
+
+This test will pass in a different page number and check that the page in the reponse matches the page number passed in.
+
+_Tests_
+
+This has 2 tests:
+
+- Check that the return code is 200
+- Check that the pages element is 2
+
+### createPosts ###
+
+This will test the creating of a blog post.  
+
+_Setup_ 
+
+The setup for this is fairly complex.  It will create a timestamp based on the current datetime.  
+It will select a new category type.
+It will then create the blog category.
+
+_Body_
+
+The timestamp, category and id (of the category) are all used to populate the JSON body.  This is then sent to the API.
+
+_Tests_
+
+This contains 2 tests:
+
+- The return code is checked to be 200
+- The all blog posts call is used to get all the posts and this is checked to ensure it contains the newly created post.
+
+### listPosts ###
+
+**Method: GET Testname: _checkForYear_**
+
+This will test returning the posts from a specific year.  This is using the sample data provided with the API.
+
+_Tests_
+
+This has 2 tests:
+
+- Checking the return code is 200
+- Checking the number of posts is 5
+
+**Method: GET Testname: _checkForYearNonExisting_**
+
+This will test returning the posts from a specific year which does not exist.  The year chosen is 1988.  There will not be many blog posts then.
+
+This test isn't actually covered in swagger, but was added as it seems sensible.
+
+_Tests_
+
+This has 2 tests:
+
+- Checking the return code is 200
+- Check the total returned is 0
+
+### listPostsByYearMonth ###
+
+**Method: GET Testname: _checkForYearMonth_**
+
+This will test returning the posts from a specific year and month.  This is using the sample data provided with the API.
+
+_Tests_
+
+This has 2 tests:
+
+- Checking the return code is 200
+- Checking the number of posts is 5
+
+**Method: GET Testname: _checkForYearMonthNonExisting_**
+
+This will test returning the posts from a specific year which does not exist.  The year chosen is 1895 and Jine.  There will not be many blog posts then.
+
+This test isn't actually covered in swagger, but was added as it seems sensible.
+
+_Tests_
+
+This has 2 tests:
+
+- Checking the return code is 200
+- Check the total returned is 0
+
+### listPostsByYearMonthDay ###
+
+**Method: GET Testname: checkForYearMonthDay**
+
+This will test returning the posts from a specific year and month and day.  This is using the sample data provided with the API.
+
+_Tests_
+
+This has 2 tests:
+
+- Checking the return code is 200
+- Checking the number of posts is 4
 
 
 ## Issues Found ##
@@ -161,6 +440,11 @@ Another item I would seek to discuss with a developer, this call returns an HTTP
 
 This is a classic bug vs feature argument, however I come down on the side of raising this as a **bug**
 
+**The call to PUT /blog/posts/ (creating a new blog post) - should this return a 201 rather than a 200?**
+If we are creating a new blog post, should we not return the created status code?
+
 ## Improvements (for the tests)##
 
 At present, the base url for the tests is the same (http://localhost:8888/api/) - this really should be set as a global variable which would me the tests easily portable.
+
+There tests in the listPosts folder have a number which check the per_page.  These tests are identical and there will be way of iterating over these (in the postman runner there is - but not sure if newman supports this.)  It would make the tests look neater and still maintain coverage.
