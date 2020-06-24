@@ -859,7 +859,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Ensure per_page is set to 40, function () {",
+											"pm.test(\"Ensure per_page is set to 40\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.per_page).to.eql(40);",
 											"});"
@@ -1940,7 +1940,7 @@
 	],
 	"variable": [
 		{
-			"id": "f9a1a3b5-6666-483b-b7d7-62e38ed3a154",
+			"id": "c3a1e5c5-6b36-4af5-a22e-da8e6b564f8f",
 			"key": "categoriesBeforeAdding",
 			"value": ""
 		}
