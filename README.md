@@ -21,10 +21,13 @@ I have taken a slightly different approach on this task.  I have configured an A
 
 which is running Jenkins.  The login details for a non admin user are below:
 
-**Username:**lumDX
-**Password:**pa55w0rd
+**Username:** lumDX
+
+**Password:** pa55w0rd
+
 
 This Jenkins instance is straight "out-of-the-box" with the exception of one plugin to change the colour of "pass" from blue to green. 
+
 
 There is a single project configured for the LumeraDX Test API.
 
@@ -522,6 +525,11 @@ This is a classic bug vs feature argument, however I come down on the side of ra
 
 **The call to PUT /blog/posts/ (creating a new blog post) - should this return a 201 rather than a 200?**
 If we are creating a new blog post, should we not return the created status code?
+
+**"In use" deleting blog**
+There is a 409 in use code for one of the deleted calls.  I couldn't get this to trigger.  So marking this as a question to raise to dev.
+
+If no dev was available, it would be raised as a **bug** to ensure it is not forgotton or lost.
 
 ## Improvements (for the tests) ##
 
