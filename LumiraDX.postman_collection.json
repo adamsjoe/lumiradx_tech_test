@@ -6,6 +6,626 @@
 	},
 	"item": [
 		{
+			"name": "OperationsCategories",
+			"item": [
+				{
+					"name": "listBlogCategories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a15b3ec-8aed-4b0f-b413-5a6290925c04",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Only 3 categories are present\", function () {",
+									"    pm.expect(pm.response.json().length).to.eql(3);",
+									"});",
+									"",
+									"pm.test(\"Check first product - name\", function () {",
+									"    pm.expect(pm.response.json()[0].name).to.eql(\"Sci-Fi\");",
+									"});",
+									"",
+									"pm.test(\"Check second product - name\", function () {",
+									"    pm.expect(pm.response.json()[1].name).to.eql(\"Politics\");",
+									"});",
+									"",
+									"pm.test(\"Check third product - name\", function () {",
+									"    pm.expect(pm.response.json()[2].name).to.eql(\"Tech\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createNewBlogCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b310d109-61fe-47a0-b86b-222565b67684",
+								"exec": [
+									"var categoryNames = [\"Economics\",\"Parenting\",\"Career\",\"Pet\",\"Gaming\",\"Nature\",\"DIY\", \"Celebrity Gossip\",\"Media\",\"Social Media\",\"Cat\",\"Fitness\"];",
+									"var categoriesBeforeAdding = 0;",
+									"",
+									"// randomly select a category name",
+									"pm.variables.set(\"categoryName\", categoryNames[_.random(categoryNames.length - 1)]);",
+									"",
+									"console.log(\"Setting the categoryName to be '\" + pm.variables.get(\"categoryName\") + \"'\");",
+									"",
+									"// get the number of categories before we start adding anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }",
+									"    pm.variables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.variables.get(\"categoriesBeforeAdding\") + \" categories.\");   ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3839d15b-a444-4186-ad34-380bf149800b",
+								"exec": [
+									"// check the status code is 201 (created)",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// check that we have 1 more category than when we started",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(\"e:\" + err); }",
+									"    pm.test(\"Adding categories increases category count\", function () {",
+									"        pm.expect(err).to.equal(null);",
+									"        ",
+									"        console.log(\"We had \" + pm.variables.get(\"categoriesBeforeAdding\") + \" categories, add one means we should now have \" + (pm.variables.get(\"categoriesBeforeAdding\") + 1))    ",
+									"        pm.expect(res.json().length).to.eql(pm.variables.get(\"categoriesBeforeAdding\") + 1);",
+									"    })",
+									"",
+									"});",
+									"",
+									"// check that the name has been created correctly",
+									"var latestCategoryId = (pm.variables.get(\"categoriesBeforeAdding\") + 1);",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\"+ latestCategoryId, function (err, res) {",
+									"    if (err) { console.log(\"e:\" + err); }",
+									"    pm.test(\"Check the category has been created\", function () {",
+									"        pm.expect(res.json().name).to.eql(pm.variables.get(\"categoryName\"));",
+									"    })",
+									"",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{categoryName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3a7eeb27-5f21-4dab-b833-29cc1c202f4d",
+								"exec": [
+									"const req1 = req => {",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err, res) => req2(err, res),",
+									"  );",
+									"};",
+									"const req2 = (err, res) => {",
+									"  if (err) throw err;",
+									"  const varResponseData = res.json();",
+									"  console.log('b4 ' + varResponseData.length);",
+									"  pm.variables.set('beforeDeleteTesting', res.json().length);",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'POST',",
+									"      header: 'content-type: application/json',",
+									"      body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ name: 'Super Dooper' }),",
+									"      },",
+									"    },",
+									"    (err2, res2) => req3(err2, res, res2),",
+									"  );",
+									"};",
+									"const req3 = (err, res, res2) => {",
+									"  if (err) throw err;",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err3, res3) => result(err3, res, res2, res3),",
+									"  );",
+									"};",
+									"const result = (err, res, res2, res3) => {",
+									"  if (err) throw err;",
+									"  console.log(res, res2, res3);",
+									"  const varResponseData = res3.json();",
+									"  // console.log(res.json());",
+									"  const max = Math.max(...varResponseData.map(user => user.id));",
+									"  console.log('max val ' + max);",
+									"  pm.variables.set('idToDelete', max);",
+									"  setTimeout(function() {}, 2000);",
+									"};",
+									"req1();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "525611c5-697e-4bc4-9a1d-636e296bf916",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"pm.test(\"Check we still have the same number of categories as before the test was ran\", function () {",
+									"    pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, response) {",
+									"        pm.expect(response.json().length).to.eql(pm.variables.get('beforeDeleteTesting'));   ",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToDelete}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToDelete}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteNonExistingCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "97a87b73-bfa2-4e08-94dc-f51ef0f834da",
+								"exec": [
+									"// get the number of categories before we start adding/deleting anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }    ",
+									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
+									"});",
+									"",
+									"// now let's make sure we use a number which should not exist",
+									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
+									"pm.variables.set(\"idToUse\", nonExistingId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e53ecfd5-3f70-4dca-acea-e8f75f1daa88",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listPostsInCategory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "88c76675-2fd0-41d0-8d12-c25237e43f37",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ensure category name is Sci-Fi\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.variables.get(\"categoryName\"));",
+									"});",
+									"",
+									"pm.test(\"Ensure the 'Sci-Fi' category has 4 posts associated with it\", function () {",
+									"    var jsonData = pm.response.json();    ",
+									"    pm.expect(jsonData.posts.length).to.eql(pm.variables.get(\"postsInCategory\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4d7248ea-f6b2-4cf6-aa90-c6ffed4edb41",
+								"exec": [
+									"pm.variables.set(\"idToUse\",1 );",
+									"pm.variables.set(\"categoryName\", \"Sci-Fi\");",
+									"pm.variables.set(\"postsInCategory\", 4)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listPostsInCategoryNonExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c94ef785-173a-4b22-b33b-6a6d17176f76",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b3080a2e-007d-47e8-bf23-e14856a69689",
+								"exec": [
+									"// get the number of categories before we start adding/deleting anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }    ",
+									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
+									"});",
+									"",
+									"// now let's make sure we use a number which should not exist",
+									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
+									"pm.variables.set(\"idToUse\", nonExistingId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateBlogCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9c9e9dd9-c04b-420d-940c-2cb77f32768a",
+								"exec": [
+									"const req1 = req => {",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err, res) => req2(err, res),",
+									"  );",
+									"};",
+									"const req2 = (err, res) => {",
+									"  if (err) throw err;",
+									"  const varResponseData = res.json();",
+									"  console.log('b4 ' + varResponseData.length);",
+									"  pm.variables.set('beforeDeleteTesting', res.json().length);",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'POST',",
+									"      header: 'content-type: application/json',",
+									"      body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ name: 'Super Dooper' }),",
+									"      },",
+									"    },",
+									"    (err2, res2) => req3(err2, res, res2),",
+									"  );",
+									"};",
+									"const req3 = (err, res, res2) => {",
+									"  if (err) throw err;",
+									"  pm.sendRequest(",
+									"    {",
+									"      url: 'http://localhost:8888/api/blog/categories/',",
+									"      method: 'GET',",
+									"    },",
+									"    (err3, res3) => result(err3, res, res2, res3),",
+									"  );",
+									"};",
+									"const result = (err, res, res2, res3) => {",
+									"  if (err) throw err;",
+									"  console.log(res, res2, res3);",
+									"  const varResponseData = res3.json();",
+									"  // console.log(res.json());",
+									"  const max = Math.max(...varResponseData.map(user => user.id));",
+									"  console.log('max val ' + max);",
+									"  pm.variables.set('idToUse', max);",
+									"  setTimeout(function() {}, 2000);",
+									"};",
+									"req1();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8aba5c41-b21d-4177-a72b-ed7abccecd54",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"  ",
+									"pm.test(\"Check that the name was updated\", function () {",
+									"    pm.sendRequest(\"http://localhost:8888/api/blog/categories/\"+pm.variables.get(\"idToUse\"), function (err, response) {",
+									"        console.log(response.json());",
+									"        var jsonData = response.json();",
+									"        pm.expect(jsonData.name).to.eql(\"Updated Category Name\");",
+									"        pm.expect(jsonData.id).to.eql(pm.variables.get(\"idToUse\"));",
+									"        ",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Category Name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateNonExistingBlogCategory",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1da7fa07-0839-4d08-8a1b-b2f160e08417",
+								"exec": [
+									"// get the number of categories before we start adding/deleting anything",
+									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
+									"    if (err) { console.log(err); }    ",
+									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
+									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
+									"});",
+									"",
+									"// now let's make sure we use a number which should not exist",
+									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
+									"pm.variables.set(\"idToUse\", nonExistingId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "93b91d2c-070d-4a0d-983d-47caf92ea9d6",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Will not matter - not found\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"blog",
+								"categories",
+								"{{idToUse}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "OperationsPosts",
 			"item": [
 				{
@@ -23,7 +643,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Ensure per_page is set to 10 (default) when nothing is passed\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.per_page).to.eql(10);",
 											"});"
@@ -63,7 +683,7 @@
 							"response": []
 						},
 						{
-							"name": "listAllBlogPostsDefault2PerPage",
+							"name": "listAllBlogPosts2PerPage",
 							"event": [
 								{
 									"listen": "test",
@@ -74,7 +694,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Ensure per_page is set to 2\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.per_page).to.eql(2);",
 											"});"
@@ -118,7 +738,7 @@
 							"response": []
 						},
 						{
-							"name": "listAllBlogPostsDefault10PerPage",
+							"name": "listAllBlogPosts10PerPage",
 							"event": [
 								{
 									"listen": "test",
@@ -129,7 +749,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Ensure per_page is set to 10\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.per_page).to.eql(10);",
 											"});"
@@ -173,7 +793,7 @@
 							"response": []
 						},
 						{
-							"name": "listAllBlogPostsDefault20PerPage",
+							"name": "listAllBlogPosts20PerPage",
 							"event": [
 								{
 									"listen": "test",
@@ -184,7 +804,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Ensure per_page is set to 20\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.per_page).to.eql(20);",
 											"});"
@@ -228,7 +848,7 @@
 							"response": []
 						},
 						{
-							"name": "listAllBlogPostsDefault40PerPage",
+							"name": "listAllBlogPosts40PerPage",
 							"event": [
 								{
 									"listen": "test",
@@ -239,7 +859,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Ensure per_page is set to 40, function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.per_page).to.eql(40);",
 											"});"
@@ -283,7 +903,7 @@
 							"response": []
 						},
 						{
-							"name": "listAllBlogPostsDefault50PerPage",
+							"name": "listAllBlogPosts50PerPage",
 							"event": [
 								{
 									"listen": "test",
@@ -294,9 +914,9 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Ensure per_page is set to 50\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.per_page).to.eql(40);",
+											"    pm.expect(jsonData.per_page).to.eql(50);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -427,7 +1047,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Check page number is 2\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.page).to.eql(2);",
 											"});"
@@ -887,7 +1507,7 @@
 					"name": "listPostsByYearMonthDay",
 					"item": [
 						{
-							"name": "checkForYearMonth",
+							"name": "checkForYearMonthDay",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -986,7 +1606,7 @@
 								}
 							],
 							"request": {
-								"method": "GET",
+								"method": "DELETE",
 								"header": [],
 								"url": {
 									"raw": "http://localhost:8888/api/blog/posts/{{idToDel}}",
@@ -1080,7 +1700,7 @@
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Your test name\", function () {",
+											"pm.test(\"Check the (blog) body is correct\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.body).to.eql(\"The drought had lasted now for ten million years, and the reign of the terrible lizards had long since ended. Here on the Equator, in the continent which would one day be known as Africa, the battle for existence had reached a new climax of ferocity, and the victor was not yet in sight. In this barren and desiccated land, only the small or the swift or the fierce could flourish, or even hope to survive.\");",
 											"});",
@@ -1178,628 +1798,151 @@
 				},
 				{
 					"name": "updatePosts",
-					"item": [],
+					"item": [
+						{
+							"name": "updateBlogById",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "32185426-2c82-46ce-9c90-ef9ee4026dc4",
+										"exec": [
+											"pm.variables.set(\"idToUse\", 1)",
+											"pm.variables.set(\"updatedBody\", \"The drought had lasted now for ten million years, and the reign of the terrible lizards had long since ended. Here on the Equator, in the continent which would one day be known as Africa, the battle for existence had reached a new climax of ferocity, and the victor was not yet in sight. In this barren and desiccated land, only the small or the swift or the fierce could flourish, or even hope to survive - updated\")",
+											"pm.variables.set(\"updatedTitle\", \"The Road to Extinction - updated\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "8e9a02e5-c60e-4b16-9d90-fea333e308b6",
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.test(\"Check that the body was updated\", function () {",
+											"    pm.sendRequest(\"http://localhost:8888/api/blog/posts/\"+pm.variables.get(\"idToUse\"), function (err, response) {",
+											"        console.log(response.json());",
+											"        var jsonData = response.json();",
+											"        pm.expect(jsonData.body).to.eql(pm.variables.get(\"updatedBody\"));                ",
+											"    })",
+											"});",
+											"",
+											"pm.test(\"Check that the title was updated\", function () {",
+											"    pm.sendRequest(\"http://localhost:8888/api/blog/posts/\"+pm.variables.get(\"idToUse\"), function (err, response) {",
+											"        console.log(response.json());",
+											"        var jsonData = response.json();",
+											"        pm.expect(jsonData.title).to.eql(pm.variables.get(\"updatedTitle\"));                ",
+											"    })",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"body\": \"{{updatedBody}}\",\n  \"category\": \"Sci-Fi\",\n  \"category_id\": 1,\n  \"id\": 1,\n  \"pub_date\": \"2016-06-11T15:56:29.200201\",\n  \"title\": \"{{updatedTitle}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/{{idToUse}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"{{idToUse}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateBlogByIdNonExisting",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "4c05fcd2-9093-4164-a047-ebc3adecea1e",
+										"exec": [
+											"pm.variables.set(\"idToUse\", 9999)",
+											"pm.variables.set(\"updatedBody\", \"The drought had lasted now for ten million years, and the reign of the terrible lizards had long since ended. Here on the Equator, in the continent which would one day be known as Africa, the battle for existence had reached a new climax of ferocity, and the victor was not yet in sight. In this barren and desiccated land, only the small or the swift or the fierce could flourish, or even hope to survive - updated\")",
+											"pm.variables.set(\"updatedTitle\", \"The Road to Extinction - updated\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "3b69443d-e9a4-4124-a68c-abb323939568",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"body\": \"{{updatedBody}}\",\n  \"category\": \"Sci-Fi\",\n  \"category_id\": 1,\n  \"id\": 1,\n  \"pub_date\": \"2016-06-11T15:56:29.200201\",\n  \"title\": \"{{updatedTitle}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/blog/posts/{{idToUse}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"blog",
+										"posts",
+										"{{idToUse}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
-		},
+		}
+	],
+	"variable": [
 		{
-			"name": "OperationsCategories",
-			"item": [
-				{
-					"name": "listBlogCategories",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "8a15b3ec-8aed-4b0f-b413-5a6290925c04",
-								"exec": [
-									"/**",
-									" * initialAPIStates",
-									" * ",
-									" * @Description: Checks the initial state of the API.  NOTE: only to be used after a restart of the API when values will be known (for now)",
-									" */",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Only 3 objects in array\", function () {",
-									"    pm.expect(pm.response.json().length).to.eql(3);",
-									"});",
-									"",
-									"pm.test(\"Check first product - name\", function () {",
-									"    pm.expect(pm.response.json()[0].name).to.eql(\"Sci-Fi\");",
-									"});",
-									"",
-									"pm.test(\"Check second product - name\", function () {",
-									"    pm.expect(pm.response.json()[1].name).to.eql(\"Politics\");",
-									"});",
-									"",
-									"pm.test(\"Check third product - name\", function () {",
-									"    pm.expect(pm.response.json()[2].name).to.eql(\"Tech\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "createNewBlogCategory",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "b310d109-61fe-47a0-b86b-222565b67684",
-								"exec": [
-									"var categoryNames = [\"Economics\",\"Parenting\",\"Career\",\"Pet\",\"Gaming\",\"Nature\",\"DIY\", \"Celebrity Gossip\",\"Media\",\"Social Media\",\"Cat\",\"Fitness\"];",
-									"var categoriesBeforeAdding = 0;",
-									"",
-									"// randomly select a category name",
-									"pm.variables.set(\"categoryName\", categoryNames[_.random(categoryNames.length - 1)]);",
-									"",
-									"console.log(\"Setting the categoryName to be '\" + pm.variables.get(\"categoryName\") + \"'\");",
-									"",
-									"// get the number of categories before we start adding anything",
-									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
-									"    if (err) { console.log(err); }",
-									"    pm.variables.set(\"categoriesBeforeAdding\", res.json().length);",
-									"    console.log(\"There are \" + pm.variables.get(\"categoriesBeforeAdding\") + \" categories.\");   ",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "3839d15b-a444-4186-ad34-380bf149800b",
-								"exec": [
-									"// check the status code is 201 (created)",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"// check that we have 1 more category than when we started",
-									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
-									"    if (err) { console.log(\"e:\" + err); }",
-									"    pm.test(\"Adding categories increases category count\", function () {",
-									"        pm.expect(err).to.equal(null);",
-									"        ",
-									"        console.log(\"We had \" + pm.variables.get(\"categoriesBeforeAdding\") + \" categories, add one means we should now have \" + (pm.variables.get(\"categoriesBeforeAdding\") + 1))    ",
-									"        pm.expect(res.json().length).to.eql(pm.variables.get(\"categoriesBeforeAdding\") + 1);",
-									"    })",
-									"",
-									"});",
-									"",
-									"// check that the name has been created correctly",
-									"var latestCategoryId = (pm.variables.get(\"categoriesBeforeAdding\") + 1);",
-									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\"+ latestCategoryId, function (err, res) {",
-									"    if (err) { console.log(\"e:\" + err); }",
-									"    pm.test(\"Check the category has been created\", function () {",
-									"        pm.expect(res.json().name).to.eql(pm.variables.get(\"categoryName\"));",
-									"    })",
-									"",
-									"});",
-									"",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"{{categoryName}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteCategory",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "3a7eeb27-5f21-4dab-b833-29cc1c202f4d",
-								"exec": [
-									"const req1 = req => {",
-									"  pm.sendRequest(",
-									"    {",
-									"      url: 'http://localhost:8888/api/blog/categories/',",
-									"      method: 'GET',",
-									"    },",
-									"    (err, res) => req2(err, res),",
-									"  );",
-									"};",
-									"const req2 = (err, res) => {",
-									"  if (err) throw err;",
-									"  const varResponseData = res.json();",
-									"  console.log('b4 ' + varResponseData.length);",
-									"  pm.variables.set('beforeDeleteTesting', res.json().length);",
-									"  pm.sendRequest(",
-									"    {",
-									"      url: 'http://localhost:8888/api/blog/categories/',",
-									"      method: 'POST',",
-									"      header: 'content-type: application/json',",
-									"      body: {",
-									"        mode: 'raw',",
-									"        raw: JSON.stringify({ name: 'Super Dooper' }),",
-									"      },",
-									"    },",
-									"    (err2, res2) => req3(err2, res, res2),",
-									"  );",
-									"};",
-									"const req3 = (err, res, res2) => {",
-									"  if (err) throw err;",
-									"  pm.sendRequest(",
-									"    {",
-									"      url: 'http://localhost:8888/api/blog/categories/',",
-									"      method: 'GET',",
-									"    },",
-									"    (err3, res3) => result(err3, res, res2, res3),",
-									"  );",
-									"};",
-									"const result = (err, res, res2, res3) => {",
-									"  if (err) throw err;",
-									"  console.log(res, res2, res3);",
-									"  const varResponseData = res3.json();",
-									"  // console.log(res.json());",
-									"  const max = Math.max(...varResponseData.map(user => user.id));",
-									"  console.log('max val ' + max);",
-									"  pm.variables.set('idToDelete', max);",
-									"  setTimeout(function() {}, 2000);",
-									"};",
-									"req1();"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "525611c5-697e-4bc4-9a1d-636e296bf916",
-								"exec": [
-									"pm.test(\"Status code is 204\", function () {",
-									"    pm.response.to.have.status(204);",
-									"});",
-									"",
-									"// pm.test(\"Check we have the same number of elements from before the delete test\", function () {",
-									"//     pm.expect(pm.response.json().length).to.eql(pm.variables.get('beforeDeleteTesting'));",
-									"// });"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/{{idToDelete}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								"{{idToDelete}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteNonExistingCategory",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "97a87b73-bfa2-4e08-94dc-f51ef0f834da",
-								"exec": [
-									"// get the number of categories before we start adding/deleting anything",
-									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
-									"    if (err) { console.log(err); }    ",
-									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
-									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
-									"});",
-									"",
-									"// now let's make sure we use a number which should not exist",
-									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
-									"pm.variables.set(\"idToUse\", nonExistingId);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "e53ecfd5-3f70-4dca-acea-e8f75f1daa88",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(404);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								"{{idToUse}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listPostsInCategory",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "88c76675-2fd0-41d0-8d12-c25237e43f37",
-								"exec": [
-									"/**",
-									" * initialAPIStates",
-									" * ",
-									" * @Description: Checks the initial state of the API.  NOTE: only to be used after a restart of the API when values will be known (for now)",
-									" */",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listPostsInCategoryNonExisting",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "c94ef785-173a-4b22-b33b-6a6d17176f76",
-								"exec": [
-									"/**",
-									" * initialAPIStates",
-									" * ",
-									" * @Description: Checks the initial state of the API.  NOTE: only to be used after a restart of the API when values will be known (for now)",
-									" */",
-									"",
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "b3080a2e-007d-47e8-bf23-e14856a69689",
-								"exec": [
-									"// get the number of categories before we start adding/deleting anything",
-									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
-									"    if (err) { console.log(err); }    ",
-									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
-									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
-									"});",
-									"",
-									"// now let's make sure we use a number which should not exist",
-									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
-									"pm.variables.set(\"idToUse\", nonExistingId);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								"{{idToUse}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateBlogCategory",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "9c9e9dd9-c04b-420d-940c-2cb77f32768a",
-								"exec": [
-									"const req1 = req => {",
-									"  pm.sendRequest(",
-									"    {",
-									"      url: 'http://localhost:8888/api/blog/categories/',",
-									"      method: 'GET',",
-									"    },",
-									"    (err, res) => req2(err, res),",
-									"  );",
-									"};",
-									"const req2 = (err, res) => {",
-									"  if (err) throw err;",
-									"  const varResponseData = res.json();",
-									"  console.log('b4 ' + varResponseData.length);",
-									"  pm.variables.set('beforeDeleteTesting', res.json().length);",
-									"  pm.sendRequest(",
-									"    {",
-									"      url: 'http://localhost:8888/api/blog/categories/',",
-									"      method: 'POST',",
-									"      header: 'content-type: application/json',",
-									"      body: {",
-									"        mode: 'raw',",
-									"        raw: JSON.stringify({ name: 'Super Dooper' }),",
-									"      },",
-									"    },",
-									"    (err2, res2) => req3(err2, res, res2),",
-									"  );",
-									"};",
-									"const req3 = (err, res, res2) => {",
-									"  if (err) throw err;",
-									"  pm.sendRequest(",
-									"    {",
-									"      url: 'http://localhost:8888/api/blog/categories/',",
-									"      method: 'GET',",
-									"    },",
-									"    (err3, res3) => result(err3, res, res2, res3),",
-									"  );",
-									"};",
-									"const result = (err, res, res2, res3) => {",
-									"  if (err) throw err;",
-									"  console.log(res, res2, res3);",
-									"  const varResponseData = res3.json();",
-									"  // console.log(res.json());",
-									"  const max = Math.max(...varResponseData.map(user => user.id));",
-									"  console.log('max val ' + max);",
-									"  pm.variables.set('idToUse', max);",
-									"  setTimeout(function() {}, 2000);",
-									"};",
-									"req1();"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "8aba5c41-b21d-4177-a72b-ed7abccecd54",
-								"exec": [
-									"pm.test(\"Status code is 204\", function () {",
-									"    pm.response.to.have.status(204);",
-									"});",
-									"",
-									"  ",
-									"pm.test(\"Check that the name was updated\", function () {",
-									"    pm.sendRequest(\"http://localhost:8888/api/blog/categories/\"+pm.variables.get(\"idToUse\"), function (err, response) {",
-									"        console.log(response.json());",
-									"        var jsonData = response.json();",
-									"        pm.expect(jsonData.name).to.eql(\"Updated Category Name\");",
-									"    })",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Updated Category Name\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								"{{idToUse}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateNonExistingBlogCategory",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "1da7fa07-0839-4d08-8a1b-b2f160e08417",
-								"exec": [
-									"// get the number of categories before we start adding/deleting anything",
-									"pm.sendRequest(\"http://localhost:8888/api/blog/categories/\", function (err, res) {",
-									"    if (err) { console.log(err); }    ",
-									"    pm.collectionVariables.set(\"categoriesBeforeAdding\", res.json().length);",
-									"    console.log(\"There are \" + pm.collectionVariables.get(\"categoriesBeforeAdding\") + \" categories.\");",
-									"});",
-									"",
-									"// now let's make sure we use a number which should not exist",
-									"var nonExistingId = pm.variables.get(\"categoriesBeforeAdding\") * 100;",
-									"pm.variables.set(\"idToUse\", nonExistingId);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "93b91d2c-070d-4a0d-983d-47caf92ea9d6",
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Will not matter - not found\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8888/api/blog/categories/{{idToUse}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"api",
-								"blog",
-								"categories",
-								"{{idToUse}}"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
+			"id": "f9a1a3b5-6666-483b-b7d7-62e38ed3a154",
+			"key": "categoriesBeforeAdding",
+			"value": ""
 		}
 	],
 	"protocolProfileBehavior": {}
