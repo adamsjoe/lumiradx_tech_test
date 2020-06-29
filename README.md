@@ -41,7 +41,7 @@ A test report will be produced for each run, it will be stored against each run.
 This set of tests has been created with postman and output as a collection.  The actual JSON produced is available in this archive.
 Newman is being used to run the tests and product the report (available within each numbered build.)
 
-### Pipelie ###
+### Pipeline ###
 
 The GitHub repo contains a pipeline folder, this is the Jenkins pipeline to run the tests and produce the report.
 
