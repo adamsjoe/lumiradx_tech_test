@@ -17,7 +17,7 @@
 ## Approach ##
 
 I have taken a slightly different approach on this task.  I have configured an Amazon EC2 micro instance at
-**http://3.134.118.240:8080/**
+**http://18.220.72.34:8080/**
 
 which is running Jenkins.  The login details for a non admin user are below:
 
@@ -30,7 +30,7 @@ This Jenkins instance is straight "out-of-the-box" with the exception of one plu
 
 There is a single project configured for the LumeraDX Test API.
 
-**http://3.134.118.240:8080/job/LumiraDX/**
+**http://18.220.72.34:8080/job/LumiraDX/**
 
 Tests can be ran by logging in and selecting the "build now" on the left.
 
